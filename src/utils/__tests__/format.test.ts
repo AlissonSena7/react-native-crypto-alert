@@ -33,6 +33,30 @@ describe("formatPrice", () => {
     expect(formatPrice(0.0001)).toBe("0.00");
   });
 
+  it("formata com uma casa decimal quando decimals é 1", () => {
+    expect(formatPrice(1234.56, 1)).toBe("1,234.6");
+  });
+
+  it("formata com três casas decimais quando decimals é 3", () => {
+    expect(formatPrice(1.23456, 3)).toBe("1.235");
+  });
+
+  it("arredonda a soma de 0.1 + 0.2 para '0.30'", () => {
+    expect(formatPrice(0.1 + 0.2)).toBe("0.30");
+  });
+
+  it("mantém o sinal de zero negativo", () => {
+    expect(formatPrice(-0)).toBe("-0.00");
+  });
+
+  it("preserva o sinal negativo em valores que arredondam para zero", () => {
+    expect(formatPrice(-0.0001)).toBe("-0.00");
+  });
+
+  it("trunca um número de casas decimais fracionário", () => {
+    expect(formatPrice(10, 2.5)).toBe("10.00");
+  });
+
   it("formata valores muito grandes com separadores de milhar", () => {
     expect(formatPrice(1e21)).toBe("1,000,000,000,000,000,000,000.00");
   });
@@ -89,5 +113,29 @@ describe("formatChange", () => {
 
   it("retorna '+Infinity%' quando a variação é infinita", () => {
     expect(formatChange(Number.POSITIVE_INFINITY)).toBe("+Infinity%");
+  });
+
+  it("retorna '-Infinity%' quando a variação é negativa infinita", () => {
+    expect(formatChange(Number.NEGATIVE_INFINITY)).toBe("-Infinity%");
+  });
+
+  it("trata zero negativo como variação positiva", () => {
+    expect(formatChange(-0)).toBe("+0.00%");
+  });
+
+  it("não separa milhares na variação", () => {
+    expect(formatChange(1234.5)).toBe("+1234.50%");
+  });
+
+  it("arredonda a soma de 0.1 + 0.2 para '+0.30%'", () => {
+    expect(formatChange(0.1 + 0.2)).toBe("+0.30%");
+  });
+
+  it("lança TypeError quando a variação é undefined", () => {
+    expect(() => formatChange(undefined as unknown as number)).toThrow(TypeError);
+  });
+
+  it("lança TypeError quando a variação é null", () => {
+    expect(() => formatChange(null as unknown as number)).toThrow(TypeError);
   });
 });
