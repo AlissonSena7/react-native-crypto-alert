@@ -33,6 +33,7 @@ export function ConditionOptionRow({
         selected ? conditionOptionRowStyles.cardSelected : null,
       ]}
       accessibilityRole="radio"
+      accessibilityLabel={title}
       accessibilityState={{ selected }}
     >
       <View style={conditionOptionRowStyles.row}>

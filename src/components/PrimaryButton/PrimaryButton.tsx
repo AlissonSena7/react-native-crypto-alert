@@ -33,6 +33,7 @@ export function PrimaryButton({
         pressed && !disabled ? primaryButtonStyles.pressed : null,
       ]}
       accessibilityRole="button"
+      accessibilityLabel={label}
       accessibilityState={{ disabled }}
     >
       <View style={primaryButtonStyles.contentRow}>
